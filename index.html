@@ -1,469 +1,387 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EVA – Asistente Estudiantil (Demo)</title>
-  <style>
-    :root {
-      --bg: #0b1220;
-      --card: #121a2a;
-      --accent: #7aa2ff;
-      --accent-2: #37d4a3;
-      --text: #e6edf6;
-      --muted: #a9b4c7;
-      --danger: #ff6b6b;
-      --chip: #1c2740;
-      --bubble-user: #233357;
-      --bubble-eva: #141e33;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: linear-gradient(180deg, #090f1a, #0e1626);
-      color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      display: grid; place-items: center; min-height: 100vh; padding: 16px;
-    }
-    .app {
-      width: 100%; max-width: 900px; background: var(--card); border-radius: 16px; overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      display: grid; grid-template-rows: auto 1fr auto;
-      height: 85vh;
-    }
-    header {
-      padding: 14px 18px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06);
-      background: linear-gradient(180deg, rgba(18,26,42,0.75), rgba(18,26,42,0.3));
-      position: sticky; top: 0; z-index: 2;
-    }
-    header .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-    header h1 { font-size: 16px; margin: 0; font-weight: 600; letter-spacing: 0.2px; }
-    header .meta { margin-left: auto; font-size: 12px; color: var(--muted); }
-    #chat {
-      padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
-      scroll-behavior: smooth;
-    }
-    .msg { display: flex; gap: 10px; align-items: flex-end; }
-    .msg.eva { justify-content: flex-start; }
-    .msg.user { justify-content: flex-end; }
-    .bubble {
-      max-width: 70ch; padding: 12px 14px; border-radius: 12px; line-height: 1.4;
-      border: 1px solid rgba(255,255,255,0.06);
-      white-space: pre-wrap;
-    }
-    .eva .bubble { background: var(--bubble-eva); }
-    .user .bubble { background: var(--bubble-user); }
-    .time { font-size: 11px; color: var(--muted); margin-top: 4px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .chip {
-      background: var(--chip); border: 1px solid rgba(255,255,255,0.06); color: var(--text);
-      padding: 8px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; user-select: none; transition: 0.2s;
-    }
-    .chip:hover { transform: translateY(-1px); border-color: rgba(122,162,255,0.6); }
-    .card {
-      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 12px; padding: 12px; margin-top: 6px;
-    }
-    .card h4 { margin: 0 0 8px 0; font-size: 14px; }
-    .list { display: grid; gap: 8px; }
-    .row { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; }
-    .tag { font-size: 11px; color: var(--muted); }
-    .cta {
-      margin-top: 10px; display: inline-flex; gap: 8px; align-items: center; cursor: pointer;
-      background: linear-gradient(180deg, #2a57ff, #2044cc); border: none; color: white;
-      padding: 8px 12px; border-radius: 10px; font-weight: 600; box-shadow: 0 4px 18px rgba(58,104,255,0.35);
-    }
-    .cta.secondary { background: #203257; box-shadow: none; border: 1px solid rgba(255,255,255,0.06); }
-    footer {
-      display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 12px; border-top: 1px solid rgba(255,255,255,0.06);
-      background: linear-gradient(0deg, rgba(18,26,42,0.75), rgba(18,26,42,0.3));
-    }
-    input[type="text"] {
-      background: #0f1729; border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px;
-      border-radius: 12px; width: 100%; outline: none; transition: 0.2s; font-size: 14px;
-    }
-    input[type="text"]::placeholder { color: #7f8ca7; }
-    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(122,162,255,0.15); }
-    button.send {
-      background: linear-gradient(180deg, var(--accent-2), #2aa581); border: none; color: #0a1322;
-      padding: 12px 16px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s;
-    }
-    button.send:hover { filter: brightness(1.05); transform: translateY(-1px); }
-    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #0a1322; border: 1px solid rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 6px; font-size: 12px; color: var(--accent-2); }
-    .mini { font-size: 12px; color: var(--muted); margin-top: 8px; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EVA – Asistente Estudiantil (Demo enriquecido + EUDE)</title>
+<style>
+  :root {
+    --bg: #0b1220; --card:#121a2a; --accent:#7aa2ff; --accent-2:#37d4a3;
+    --text:#e6edf6; --muted:#a9b4c7; --chip:#1c2740; --bubble-user:#233357; --bubble-eva:#141e33;
+  }
+  [data-theme="light"]{
+    --bg:#f6f7fb; --card:#ffffff; --text:#0b1220; --muted:#5b657a;
+    --chip:#eef2ff; --bubble-user:#e6ecff; --bubble-eva:#f3f5f9;
+  }
+  *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,var(--bg),#0e1626);
+    color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    display:grid;place-items:center;min-height:100vh;padding:16px}
+  .app{width:100%;max-width:1000px;background:var(--card);border-radius:16px;overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);display:grid;grid-template-rows:auto 1fr auto; height:88vh}
+  header{padding:12px 14px;display:flex;gap:10px;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);
+    background:linear-gradient(180deg, rgba(18,26,42,.75), rgba(18,26,42,.3));position:sticky;top:0;z-index:3}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px}
+  .meta{margin-left:auto;font-size:12px;color:var(--muted)}
+  .toolbar{display:flex;gap:8px;margin-left:12px}
+  .btn{border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--text);font-weight:600;
+    padding:8px 10px;border-radius:10px;cursor:pointer}
+  .btn:hover{border-color:var(--accent)}
+  #layout{display:grid;grid-template-columns: 1fr 320px; height:100%}
+  #chat{padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth; background:transparent}
+  .side{border-left:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;min-height:0}
+  .side-header{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08); display:flex; gap:8px; align-items:center}
+  .side-body{padding:12px; overflow:auto; display:grid; gap:10px}
+  .msg{display:flex;gap:10px;align-items:flex-end}
+  .msg.eva{justify-content:flex-start}.msg.user{justify-content:flex-end}
+  .bubble{max-width:70ch;padding:12px 14px;border-radius:12px;line-height:1.45;border:1px solid rgba(255,255,255,.06);white-space:pre-wrap}
+  .eva .bubble{background:var(--bubble-eva)} .user .bubble{background:var(--bubble-user)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .chip{background:var(--chip);border:1px solid rgba(255,255,255,.08);color:var(--text);
+    padding:8px 10px;border-radius:999px;font-size:12px;cursor:pointer;user-select:none}
+  .chip:hover{transform:translateY(-1px);border-color:rgba(122,162,255,.6)}
+  .card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-top:6px}
+  .card h4{margin:0 0 8px 0;font-size:14px}
+  .list{display:grid;gap:8px}
+  .row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+  .tag{font-size:11px;color:var(--muted)}
+  .cta{margin-top:10px;display:inline-flex;gap:8px;align-items:center;cursor:pointer;background:linear-gradient(180deg,#2a57ff,#2044cc);border:none;color:white;padding:8px 12px;border-radius:10px;font-weight:700}
+  .cta.secondary{background:#203257;border:1px solid rgba(255,255,255,.08)}
+  footer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.08);
+    background:linear-gradient(0deg, rgba(18,26,42,.75), rgba(18,26,42,.3))}
+  input[type="text"]{background:#0f1729;border:1px solid rgba(255,255,255,.12);color:var(--text);padding:12px 14px;border-radius:12px;width:100%;outline:none;font-size:14px}
+  input[type="text"]::placeholder{color:#7f8ca7}
+  input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(122,162,255,.15)}
+  button.send{background:linear-gradient(180deg,var(--accent-2),#2aa581);border:none;color:#0a1322;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer}
+  .typing{font-size:12px;color:var(--muted);margin-left:8px}
+  .news-item{display:grid;gap:4px;padding:8px;border:1px dashed rgba(255,255,255,.1);border-radius:8px}
+  .news-item a{color:var(--accent);text-decoration:none}
+  .news-item a:hover{text-decoration:underline}
+  .error{color:#ff8080}
+  @media (max-width: 900px){ #layout{grid-template-columns:1fr} .side{display:none} }
+</style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="dot"></div>
-      <h1>EVA – Asistente Estudiantil (Demo)</h1>
-      <div class="meta">Standalone • sin watsonx</div>
-    </header>
+<div class="app" id="app">
+  <header>
+    <div class="dot"></div><h1>EVA – Asistente Estudiantil (Demo)</h1>
+    <div class="toolbar">
+      <button class="btn" id="btnNews">EUDE Noticias</button>
+      <button class="btn" id="btnClear">Limpiar chat</button>
+      <button class="btn" id="btnTheme">Tema</button>
+    </div>
+    <div class="meta">Standalone • datos mock + noticias EUDE</div>
+  </header>
 
+  <div id="layout">
     <main id="chat"></main>
 
-    <footer>
-      <input id="input" type="text" placeholder="Escribe aquí… (ej. ¿Cuándo vence el ensayo de CX?)" />
-      <button class="send" id="sendBtn">Enviar</button>
-    </footer>
+    <aside class="side">
+      <div class="side-header">
+        <strong>Explorar EUDE</strong>
+        <span id="sideStatus" class="typing"></span>
+      </div>
+      <div class="side-body" id="sideBody">
+        <button class="cta secondary" onclick="fetchEudeNews()">Cargar noticias</button>
+        <div class="tag">Muestra últimos titulares de <a href="https://www.eude.es/noticias/" target="_blank" rel="noopener">eude.es/noticias</a>.</div>
+        <div id="newsList" class="list"></div>
+        <hr style="opacity:.2">
+        <div class="tag">También puedes pedir en el chat: “noticias EUDE”, “últimas noticias”, “actualidad”.</div>
+      </div>
+    </aside>
   </div>
 
-  <script>
-  // ====== Datos de ejemplo (mock) ======
-  const KB = {
-    cursos: ["Marketing Digital II", "Customer Experience", "User Experience", "Prospectiva Estratégica"],
-    entregas: {
-      "Marketing Digital II": [
-        { actividad: "Ensayo 1", fecha: "2025-10-15", hora: "23:59", link: "#" },
-        { actividad: "Proyecto final", fecha: "2025-11-05", hora: "23:59", link: "#" }
-      ],
-      "Customer Experience": [
-        { actividad: "Caso 2", fecha: "2025-10-22", hora: "23:59", link: "#" }
-      ],
-      "User Experience": [
-        { actividad: "Test de usuarios", fecha: "2025-10-18", hora: "23:59", link: "#" }
-      ],
-      "Prospectiva Estratégica": [
-        { actividad: "Escenarios 2030", fecha: "2025-10-28", hora: "23:59", link: "#" }
-      ]
-    },
-    notas: {
-      "Marketing Digital II": { periodo: "2025-Q1", promedio: 4.3, detalle: [{ actividad: "Ensayo 1", nota: 4.5 }, { actividad: "Quiz 1", nota: 4.2 }] },
-      "Customer Experience": { periodo: "2025-Q1", promedio: 4.6, detalle: [{ actividad: "Caso 1", nota: 4.7 }] },
-      "User Experience": { periodo: "2025-Q1", promedio: 4.1, detalle: [{ actividad: "TP1", nota: 4.0 }] },
-      "Prospectiva Estratégica": { periodo: "2025-Q1", promedio: 4.4, detalle: [{ actividad: "Mapa actores", nota: 4.5 }] }
-    },
-    eventos: [
-      { titulo: "Webinar CX", fecha: "2025-10-10", link: "#" },
-      { titulo: "Workshop UX", fecha: "2025-10-18", link: "#" }
-    ],
-    mediosPago: ["Tarjeta de crédito", "Transferencia bancaria", "PayPal"]
-  };
+  <footer>
+    <div style="display:grid; gap:6px;">
+      <input id="input" type="text" placeholder="Escribe aquí… (ej. ¿Cuándo vence el ensayo de CX?)" />
+      <div id="typing" class="typing" style="display:none;">EVA está escribiendo…</div>
+    </div>
+    <button class="send" id="sendBtn">Enviar</button>
+  </footer>
+</div>
 
-  // Memorias simuladas
-  const TICKETS = {}; let ticketN = 123;
-  const RESERVAS = {}; let reservaN = 1;
+<script>
+/* =========================
+   Estado / utilidades UI
+========================= */
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const typing = document.getElementById('typing');
+const btnTheme = document.getElementById('btnTheme');
+const btnNews = document.getElementById('btnNews');
+const btnClear = document.getElementById('btnClear');
+const sideStatus = document.getElementById('sideStatus');
+const newsList = document.getElementById('newsList');
 
-  // ====== Utilidades UI ======
-  const chat = document.getElementById('chat');
-  const input = document.getElementById('input');
-  const sendBtn = document.getElementById('sendBtn');
+const PREF_KEY = 'eva_demo_messages_v2';
+const THEME_KEY = 'eva_demo_theme';
+document.documentElement.setAttribute('data-theme', localStorage.getItem(THEME_KEY) || 'dark');
 
-  function addMsg(who, text, html=false) {
-    const wrap = document.createElement('div');
-    wrap.className = 'msg ' + who;
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    if (html) bubble.innerHTML = text; else bubble.textContent = text;
-    wrap.appendChild(bubble);
-    chat.appendChild(wrap);
-    chat.scrollTop = chat.scrollHeight;
-  }
+function persist(){ localStorage.setItem(PREF_KEY, chat.innerHTML); }
+function restore(){ const html = localStorage.getItem(PREF_KEY); if(html) chat.innerHTML = html; }
+function setTyping(on){ typing.style.display = on ? 'block' : 'none'; }
 
-  function chip(text, onclick) {
-    const el = document.createElement('span');
-    el.className = 'chip'; el.textContent = text; el.onclick = onclick;
-    return el;
-  }
+function addMsg(who, text, html=false) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + who;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  if (html) bubble.innerHTML = text; else bubble.textContent = text;
+  wrap.appendChild(bubble);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+  persist();
+}
 
-  function addCard(html) {
-    const wrap = document.createElement('div');
-    wrap.className = 'msg eva';
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.innerHTML = '<div class="card">'+html+'</div>';
-    wrap.appendChild(bubble);
-    chat.appendChild(wrap);
-    chat.scrollTop = chat.scrollHeight;
-  }
+function chip(text, onclick) {
+  const el = document.createElement('span');
+  el.className = 'chip'; el.textContent = text; el.onclick = onclick; return el;
+}
 
-  // ====== NLU ultra-simple por reglas ======
-  const state = { pending: null, slots: {}, lastIntent: null };
+function addCard(html) {
+  const wrap = document.createElement('div'); wrap.className = 'msg eva';
+  const bubble = document.createElement('div'); bubble.className = 'bubble';
+  bubble.innerHTML = '<div class="card">'+html+'</div>';
+  wrap.appendChild(bubble); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight; persist();
+}
 
-  const INTENTS = [
-    { name: 'fechas_entregas', test: /fecha|vence|deadline|entrega/i },
-    { name: 'pedir_extension', test: /pr[oó]rroga|extensi[oó]n|no llego|necesito m[aá]s tiempo/i },
-    { name: 'ver_calificaciones', test: /nota|calificaci[oó]n|promedio/i },
-    { name: 'agendar_tutoria', test: /tutor[ií]a|asesor[ií]a|reservar cita/i },
-    { name: 'certificados', test: /certificado|constancia|historial acad[eé]mico/i },
-    { name: 'soporte_acceso', test: /contrase[nñ]a|no puedo entrar|error 403|no carga|soporte|acceso/i },
-    { name: 'bienestar', test: /estres|estr[eé]s|ansiedad|ansioso|frustrad|me siento mal|apoyo/i },
-    { name: 'eventos', test: /evento|webinar|workshop|calendario/i },
-    { name: 'estado_tramite', test: /estado.*(tr[aá]mite|ticket)|seguimiento|caso/i },
-    { name: 'matricula_pagos', test: /m[aá]tricula|pago|factura|cuotas|saldo|medios/i }
-  ];
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function simulateThinking(){ setTyping(true); return sleep(400 + Math.random()*600).then(()=>setTyping(false)); }
 
-  function detectIntent(text) {
-    const t = text.trim();
-    for (const i of INTENTS) { if (i.test.test(t)) return i.name; }
-    return 'fallback';
-  }
+/* =========================
+   Datos mock
+========================= */
+const KB = {
+  cursos:["Marketing Digital II","Customer Experience","User Experience","Prospectiva Estratégica"],
+  entregas:{
+    "Marketing Digital II":[{actividad:"Ensayo 1",fecha:"2025-10-15",hora:"23:59",link:"#"},
+                            {actividad:"Proyecto final",fecha:"2025-11-05",hora:"23:59",link:"#"}],
+    "Customer Experience":[{actividad:"Caso 2",fecha:"2025-10-22",hora:"23:59",link:"#"}],
+    "User Experience":[{actividad:"Test de usuarios",fecha:"2025-10-18",hora:"23:59",link:"#"}],
+    "Prospectiva Estratégica":[{actividad:"Escenarios 2030",fecha:"2025-10-28",hora:"23:59",link:"#"}]
+  },
+  notas:{
+    "Marketing Digital II":{periodo:"2025-Q1",promedio:4.3,detalle:[{actividad:"Ensayo 1",nota:4.5},{actividad:"Quiz 1",nota:4.2}]},
+    "Customer Experience":{periodo:"2025-Q1",promedio:4.6,detalle:[{actividad:"Caso 1",nota:4.7}]},
+    "User Experience":{periodo:"2025-Q1",promedio:4.1,detalle:[{actividad:"TP1",nota:4.0}]},
+    "Prospectiva Estratégica":{periodo:"2025-Q1",promedio:4.4,detalle:[{actividad:"Mapa actores",nota:4.5}]}
+  },
+  eventos:[{titulo:"Webinar CX",fecha:"2025-10-10",link:"#"},
+           {titulo:"Workshop UX",fecha:"2025-10-18",link:"#"}],
+  mediosPago:["Tarjeta de crédito","Transferencia bancaria","PayPal"]
+};
+const TICKETS={}; let ticketN=123; const RESERVAS={}; let reservaN=1;
 
-  function parseAsignatura(t) {
-    const lower = t.toLowerCase();
-    for (const c of KB.cursos) if (lower.includes(c.toLowerCase())) return c;
-    return null;
-  }
+/* =========================
+   NLU (reglas) + orquestación
+========================= */
+const state = { pending:null, slots:{}, lastIntent:null };
+const INTENTS = [
+  {name:'fechas_entregas', test:/fecha|vence|deadline|entrega/i},
+  {name:'pedir_extension', test:/pr[oó]rroga|extensi[oó]n|no llego|necesito m[aá]s tiempo/i},
+  {name:'ver_calificaciones', test:/nota|calificaci[oó]n|promedio/i},
+  {name:'agendar_tutoria', test:/tutor[ií]a|asesor[ií]a|reservar cita/i},
+  {name:'certificados', test:/certificado|constancia|historial acad[eé]mico/i},
+  {name:'soporte_acceso', test:/contrase[nñ]a|no puedo entrar|error 403|no carga|soporte|acceso/i},
+  {name:'bienestar', test:/estres|estr[eé]s|ansiedad|ansioso|frustrad|me siento mal|apoyo/i},
+  {name:'eventos', test:/evento|webinar|workshop|calendario/i},
+  {name:'estado_tramite', test:/estado.*(tr[aá]mite|ticket)|seguimiento|caso/i},
+  {name:'matricula_pagos', test:/m[aá]tricula|pago|factura|cuotas|saldo|medios/i},
+  {name:'noticias_eude', test:/noticia|actualidad|novedad|eude\s*news|eude\s*noticias/i}
+];
+function detectIntent(t){ for(const i of INTENTS){ if(i.test.test(t)) return i.name } return 'fallback' }
+function parseAsignatura(t){ const lo=t.toLowerCase(); for(const c of KB.cursos) if(lo.includes(c.toLowerCase())) return c; return null }
 
-  // ====== Handlers por intent ======
-  const HANDLERS = {
-    fechas_entregas: async (t) => {
-      const asig = state.slots.asignatura || parseAsignatura(t);
-      if (!asig) {
-        state.pending = 'fechas_entregas';
-        state.slots = {};
-        addMsg('eva', "¿De qué asignatura quieres ver las próximas fechas?");
-        const chips = document.createElement('div'); chips.className = 'chips';
-        KB.cursos.forEach(c => chips.appendChild(chip(c, () => userSays(c))));
-        addCard(chips.outerHTML);
-        return;
-      }
-      const lista = KB.entregas[asig] || [];
-      if (!lista.length) { addMsg('eva', `No encuentro entregas registradas en ${asig}.`); return; }
-      let html = `<h4>Próximas entregas en <b>${asig}</b></h4><div class="list">`;
-      for (const it of lista) {
-        html += `<div class="row"><div><b>${it.actividad}</b><div class="tag">${it.fecha} · ${it.hora}</div></div><a class="cta secondary" href="${it.link}">Abrir</a></div>`;
-      }
-      html += `</div>`;
-      addCard(html);
-      state.pending = null; state.slots = {};
-    },
+/* =========================
+   Handlers de intents
+========================= */
+const HANDLERS = {
+  noticias_eude: async () => {
+    addMsg('eva','Busco las últimas noticias en eude.es…');
+    await fetchEudeNews();
+  },
 
-    pedir_extension: async (t) => {
-      const need = ['asignatura','actividad','fecha_propuesta','motivo'];
-      for (const k of need) if (!state.slots[k]) {
-        state.pending = 'pedir_extension';
-        const prompts = {
-          asignatura: '¿De qué asignatura es la entrega?',
-          actividad: '¿Qué actividad necesitas extender?',
-          fecha_propuesta: '¿Para qué fecha propones la nueva entrega? (AAAA-MM-DD)',
-          motivo: '¿Cuál es el motivo principal? (salud, laborales, técnicos, otros)'
-        };
-        addMsg('eva', prompts[k]);
-        if (k==='asignatura') {
-          const chips = document.createElement('div'); chips.className='chips';
-          KB.cursos.forEach(c => chips.appendChild(chip(c, () => userSays(c))));
-          addCard(chips.outerHTML);
-        }
-        return;
-      }
-      const id = `EXT-2025-${++ticketN}`;
-      addCard(`<h4>Solicitud enviada</h4><div class="list">
-        <div><b>Ticket:</b> ${id}</div>
-        <div><b>Asignatura:</b> ${state.slots.asignatura}</div>
-        <div><b>Actividad:</b> ${state.slots.actividad}</div>
-        <div><b>Fecha propuesta:</b> ${state.slots.fecha_propuesta}</div>
-        <div><b>Motivo:</b> ${state.slots.motivo}</div>
-        <div class="tag">SLA estimado: 48 h</div>
-      </div>`);
-      TICKETS[id] = { estado: 'En revisión' };
-      state.pending = null; state.slots = {};
-    },
-
-    ver_calificaciones: async (t) => {
-      const asig = state.slots.asignatura || parseAsignatura(t);
-      if (!asig) {
-        state.pending = 'ver_calificaciones'; state.slots = {};
-        addMsg('eva', "¿De qué asignatura quieres ver tus notas?");
-        const chips = document.createElement('div'); chips.className='chips';
-        KB.cursos.forEach(c => chips.appendChild(chip(c, () => userSays(c))));
-        addCard(chips.outerHTML);
-        return;
-      }
-      const info = KB.notas[asig];
-      if (!info) { addMsg('eva', `No encontré notas en ${asig}.`); state.pending=null; state.slots={}; return; }
-      let html = `<h4>Notas en <b>${asig}</b> (${info.periodo})</h4><div class="list">`;
-      for (const d of info.detalle) html += `<div class="row"><div>${d.actividad}</div><div><b>${d.nota}</b></div></div>`;
-      html += `<div class="mini">Promedio: <b>${info.promedio}</b></div></div>`;
-      addCard(html);
-      state.pending = null; state.slots = {};
-    },
-
-    agendar_tutoria: async (t) => {
-      const need = ['profesor','datetime_inicio','datetime_fin'];
-      for (const k of need) if (!state.slots[k]) {
-        state.pending = 'agendar_tutoria';
-        const prompts = {
-          profesor: '¿Con qué profesor te gustaría reunirte? (ej. Juan Pérez)',
-          datetime_inicio: '¿Qué día y hora te viene bien? (AAAA-MM-DD HH:mm)',
-          datetime_fin: '¿Hasta qué hora? (AAAA-MM-DD HH:mm)'
-        };
-        addMsg('eva', prompts[k]); return;
-      }
-      const id = `CAL-${(reservaN++).toString().padStart(3,'0')}`;
-      RESERVAS[id] = {...state.slots};
-      addCard(`<h4>Tutoría reservada</h4><div class="list">
-        <div><b>ID:</b> ${id}</div>
-        <div><b>Profesor:</b> ${state.slots.profesor}</div>
-        <div><b>Inicio:</b> ${state.slots.datetime_inicio}</div>
-        <div><b>Fin:</b> ${state.slots.datetime_fin}</div>
-        <a class="cta">Abrir enlace de Teams</a>
-      </div>`);
-      state.pending = null; state.slots = {};
-    },
-
-    certificados: async (t) => {
-      const need = ['tipo_documento','idioma'];
-      for (const k of need) if (!state.slots[k]) {
-        state.pending = 'certificados';
-        const prompts = {
-          tipo_documento: '¿Qué documento necesitas? (Constancia de estudio / Certificado de notas / Certificado de matrícula)',
-          idioma: '¿En qué idioma (español/inglés)?'
-        };
-        addMsg('eva', prompts[k]); return;
-      }
-      addCard(`<h4>Documento listo</h4>
-        <div class="mini">Tipo: ${state.slots.tipo_documento} • Idioma: ${state.slots.idioma}</div>
-        <button class="cta secondary" onclick="alert('Descarga simulada')">Descargar PDF</button>`);
-      state.pending = null; state.slots = {};
-    },
-
-    soporte_acceso: async (t) => {
-      const need = ['plataforma','sintoma'];
-      for (const k of need) if (!state.slots[k]) {
-        state.pending = 'soporte_acceso';
-        const prompts = {
-          plataforma: '¿En qué plataforma tienes el problema? (LMS/Teams/Zoom)',
-          sintoma: 'Describe el síntoma (no carga, error 403, credenciales, video no reproduce, etc.)'
-        };
-        addMsg('eva', prompts[k]); return;
-      }
-      addCard(`<h4>Recetas rápidas</h4>
-        <div class="list">
-          <div>• Limpia caché y cookies; usa Chrome actualizado.</div>
-          <div>• Restablece tu contraseña en el LMS.</div>
-          <div>• Verifica tu conexión/red corporativa.</div>
-        </div>
-        <button class="cta" onclick="crearTicket()">Sigue el problema — crear ticket</button>
-      `);
-      window.crearTicket = () => {
-        const id = `HD-2025-${++ticketN}`; TICKETS[id] = { estado: 'En trámite' };
-        addCard(`<h4>Ticket creado</h4><div class="list"><div><b>ID:</b> ${id}</div><div class="tag">Te avisaremos por correo.</div></div>`);
-      };
-      state.pending = null; state.slots = {};
-    },
-
-    bienestar: async (t) => {
-      addCard(`<h4>Estoy contigo</h4>
-        <div class="list">
-          <div>Respiremos 10 segundos juntos. Inhala 4s, mantén 2s, exhala 6s.</div>
-          <div>Prioriza: elige la entrega más cercana y define el primer paso de 10 minutos.</div>
-          <div>¿Quieres que agendemos una tutoría breve o prefieres hablar con bienestar estudiantil?</div>
-        </div>
-        <div class="chips" id="chipsBienestar"></div>`);
-      const c = document.getElementById('chipsBienestar');
-      if (c) {
-        c.appendChild(chip('Agendar tutoría', ()=> userSays('Agendar tutoría con el profesor de CX')));
-        c.appendChild(chip('Contactar bienestar', ()=> addMsg('eva','He escalado tu caso a bienestar estudiantil. Te contactarán hoy.')));
-      }
-      state.pending = null; state.slots = {};
-    },
-
-    eventos: async (t) => {
-      let html = `<h4>Próximos eventos</h4><div class="list">`;
-      for (const e of KB.eventos) html += `<div class="row"><div><b>${e.titulo}</b><div class="tag">${e.fecha}</div></div><a class="cta secondary" href="${e.link}">Inscribirme</a></div>`;
-      html += `</div>`;
-      addCard(html);
-    },
-
-    estado_tramite: async (t) => {
-      const id = state.slots.ticket_id;
-      if (!id) { state.pending='estado_tramite'; addMsg('eva','¿Cuál es tu número de ticket? (ej. HD-2025-0123)'); return; }
-      const item = TICKETS[id] || { estado: 'No encontrado' };
-      addCard(`<h4>Estado de tu caso</h4><div class="list"><div><b>${id}</b></div><div class="tag">${item.estado}</div></div>`);
-      state.pending = null; state.slots = {};
-    },
-
-    matricula_pagos: async (t) => {
-      const oper = state.slots.operacion;
-      if (!oper) {
-        state.pending='matricula_pagos';
-        addMsg('eva','¿Quieres consultar <b>saldo</b>, ver <b>medios</b> de pago o descargar <b>factura</b>?', true);
-        const chips = document.createElement('div'); chips.className='chips';
-        ['saldo','medios','factura'].forEach(x => chips.appendChild(chip(x, () => userSays(x))));
-        addCard(chips.outerHTML);
-        return;
-      }
-      if (oper==='saldo') {
-        addCard(`<h4>Tu saldo</h4><div class="list"><div>Periodo: 2025-Q1</div><div><b>USD 1,200.00</b></div></div>`);
-      } else if (oper==='medios') {
-        addCard(`<h4>Medios de pago</h4><div class="list">${KB.mediosPago.map(m=>`<div>• ${m}</div>`).join('')}</div>`);
-      } else if (oper==='factura') {
-        addCard(`<h4>Factura</h4><div class="list"><div>Periodo: 2025-Q1</div><button class="cta secondary" onclick="alert('Descarga simulada')">Descargar PDF</button></div>`);
-      } else {
-        addMsg('eva','Operación no reconocida. Usa: saldo | medios | factura.');
-      }
-      state.pending = null; state.slots = {};
-    },
-
-    fallback: async (t) => {
-      const hits = [
-        { title: "Reglamento Académico", url: "#", snippet: "Plazos, evaluaciones y apelaciones..." },
-        { title: "FAQ Becas", url: "#", snippet: "Requisitos, fechas y renovación..." }
-      ];
-      let html = `<h4>Esto es lo más parecido que encontré</h4><div class="list">`;
-      for (const h of hits) html += `<div><b>${h.title}</b><div class="tag">${h.snippet}</div></div>`;
-      html += `</div>`;
-      addCard(html);
+  fechas_entregas: async (t) => {
+    const asig = state.slots.asignatura || parseAsignatura(t);
+    if (!asig) {
+      state.pending='fechas_entregas'; state.slots={};
+      addMsg('eva',"¿De qué asignatura quieres ver las próximas fechas?");
+      const chips=document.createElement('div'); chips.className='chips';
+      KB.cursos.forEach(c=>chips.appendChild(chip(c,()=>userSays(c))));
+      addCard(chips.outerHTML); return;
     }
-  };
+    const lista = KB.entregas[asig]||[];
+    if (!lista.length){ addMsg('eva',`No encuentro entregas registradas en ${asig}.`); return; }
+    let html=`<h4>Próximas entregas en <b>${asig}</b></h4><div class="list">`;
+    for(const it of lista){ html+=`<div class="row"><div><b>${it.actividad}</b><div class="tag">${it.fecha} · ${it.hora}</div></div><a class="cta secondary" href="${it.link}">Abrir</a></div>`}
+    html+=`</div>`; addCard(html); state.pending=null; state.slots={}
+  },
 
-  // ====== Orquestación ======
-  function userSays(text) {
-    if (!text) return;
-    addMsg('user', text);
-    const t = text.trim();
-
-    if (state.pending) {
-      const p = state.pending;
-      switch (p) {
-        case 'fechas_entregas':
-        case 'ver_calificaciones':
-          state.slots.asignatura = parseAsignatura(t) || t;
-          break;
-        case 'pedir_extension':
-          const keys = ['asignatura','actividad','fecha_propuesta','motivo'];
-          for (const k of keys) if (!state.slots[k]) { state.slots[k] = t; break; }
-          break;
-        case 'agendar_tutoria':
-          const ks = ['profesor','datetime_inicio','datetime_fin'];
-          for (const k of ks) if (!state.slots[k]) { state.slots[k] = t; break; }
-          break;
-        case 'certificados':
-          const kc = ['tipo_documento','idioma'];
-          for (const k of kc) if (!state.slots[k]) { state.slots[k] = t; break; }
-          break;
-        case 'soporte_acceso':
-          const kp = ['plataforma','sintoma'];
-          for (const k of kp) if (!state.slots[k]) { state.slots[k] = t; break; }
-          break;
-        case 'estado_tramite':
-          state.slots.ticket_id = t;
-          break;
-        case 'matricula_pagos':
-          state.slots.operacion = t.toLowerCase();
-          break;
-      }
-      HANDLERS[p](t);
+  pedir_extension: async (t)=>{
+    const need=['asignatura','actividad','fecha_propuesta','motivo'];
+    for(const k of need) if(!state.slots[k]){
+      state.pending='pedir_extension';
+      const prompts={asignatura:'¿De qué asignatura es la entrega?',actividad:'¿Qué actividad necesitas extender?',
+        fecha_propuesta:'¿Para qué fecha propones la nueva entrega? (AAAA-MM-DD)',motivo:'¿Cuál es el motivo principal? (salud, laborales, técnicos, otros)'}
+      addMsg('eva',prompts[k]);
+      if(k==='asignatura'){const chips=document.createElement('div');chips.className='chips';KB.cursos.forEach(c=>chips.appendChild(chip(c,()=>userSays(c))));addCard(chips.outerHTML)}
       return;
     }
+    const id=`EXT-2025-${++ticketN}`;
+    addCard(`<h4>Solicitud enviada</h4><div class="list"><div><b>Ticket:</b> ${id}</div><div><b>Asignatura:</b> ${state.slots.asignatura}</div>
+      <div><b>Actividad:</b> ${state.slots.actividad}</div><div><b>Fecha propuesta:</b> ${state.slots.fecha_propuesta}</div>
+      <div><b>Motivo:</b> ${state.slots.motivo}</div><div class="tag">SLA estimado: 48 h</div></div>`);
+    TICKETS[id]={estado:'En revisión'}; state.pending=null; state.slots={}
+  },
 
-    const intent = detectIntent(t);
-    state.lastIntent = intent;
-    state.slots = {};
-    state.pending = null;
-    HANDLERS[intent](t);
+  ver_calificaciones: async (t)=>{
+    const asig=state.slots.asignatura||parseAsignatura(t);
+    if(!asig){ state.pending='ver_calificaciones'; state.slots={}; addMsg('eva',"¿De qué asignatura quieres ver tus notas?");
+      const chips=document.createElement('div');chips.className='chips';KB.cursos.forEach(c=>chips.appendChild(chip(c,()=>userSays(c))));addCard(chips.outerHTML); return;}
+    const info=KB.notas[asig]; if(!info){ addMsg('eva',`No encontré notas en ${asig}.`); state.pending=null; state.slots={}; return;}
+    let html=`<h4>Notas en <b>${asig}</b> (${info.periodo})</h4><div class="list">`;
+    for(const d of info.detalle){ html+=`<div class="row"><div>${d.actividad}</div><div><b>${d.nota}</b></div></div>` }
+    html+=`<div class="tag">Promedio: <b>${info.promedio}</b></div></div>`; addCard(html); state.pending=null; state.slots={}
+  },
+
+  agendar_tutoria: async (t)=>{
+    const need=['profesor','datetime_inicio','datetime_fin'];
+    for(const k of need) if(!state.slots[k]){
+      state.pending='agendar_tutoria';
+      const prompts={profesor:'¿Con qué profesor te gustaría reunirte? (ej. Juan Pérez)',
+        datetime_inicio:'¿Qué día y hora te viene bien? (AAAA-MM-DD HH:mm)',
+        datetime_fin:'¿Hasta qué hora? (AAAA-MM-DD HH:mm)'}
+      addMsg('eva',prompts[k]); return;
+    }
+    const id=`CAL-${(reservaN++).toString().padStart(3,'0')}`; RESERVAS[id]={...state.slots};
+    addCard(`<h4>Tutoría reservada</h4><div class="list"><div><b>ID:</b> ${id}</div><div><b>Profesor:</b> ${state.slots.profesor}</div>
+      <div><b>Inicio:</b> ${state.slots.datetime_inicio}</div><div><b>Fin:</b> ${state.slots.datetime_fin}</div>
+      <a class="cta">Abrir enlace de Teams</a></div>`); state.pending=null; state.slots={}
+  },
+
+  certificados: async (t)=>{
+    const need=['tipo_documento','idioma'];
+    for(const k of need) if(!state.slots[k]){
+      state.pending='certificados';
+      const prompts={tipo_documento:'¿Qué documento necesitas? (Constancia / Certificado de notas / Matrícula)',
+                     idioma:'¿En qué idioma (español/inglés)?'};
+      addMsg('eva',prompts[k]); return;
+    }
+    addCard(`<h4>Documento listo</h4><div class="tag">Tipo: ${state.slots.tipo_documento} • Idioma: ${state.slots.idioma}</div>
+      <button class="cta secondary" onclick="alert('Descarga simulada')">Descargar PDF</button>`); state.pending=null; state.slots={}
+  },
+
+  soporte_acceso: async (t)=>{
+    const need=['plataforma','sintoma'];
+    for(const k of need) if(!state.slots[k]){
+      state.pending='soporte_acceso';
+      const prompts={plataforma:'¿En qué plataforma tienes el problema? (LMS/Teams/Zoom)',
+        sintoma:'Describe el síntoma (no carga, error 403, credenciales, video no reproduce, etc.)'};
+      addMsg('eva',prompts[k]); return;
+    }
+    addCard(`<h4>Recetas rápidas</h4><div class="list">
+        <div>• Limpia caché y cookies; usa Chrome actualizado.</div>
+        <div>• Restablece tu contraseña en el LMS.</div>
+        <div>• Verifica tu conexión/red corporativa.</div></div>
+        <button class="cta" onclick="crearTicket()">Sigue el problema — crear ticket</button>`);
+    window.crearTicket=()=>{ const id=`HD-2025-${++ticketN}`; TICKETS[id]={estado:'En trámite'};
+      addCard(`<h4>Ticket creado</h4><div class="list"><div><b>ID:</b> ${id}</div><div class="tag">Te avisaremos por correo.</div></div>`); };
+    state.pending=null; state.slots={}
+  },
+
+  bienestar: async ()=>{
+    addCard(`<h4>Estoy contigo</h4><div class="list">
+      <div>Respiremos 10 segundos juntos. Inhala 4s, mantén 2s, exhala 6s.</div>
+      <div>Prioriza: elige la entrega más cercana y define el primer paso de 10 minutos.</div>
+      <div>¿Agendamos una tutoría breve o prefieres hablar con bienestar estudiantil?</div></div>
+      <div class="chips" id="chipsBienestar"></div>`);
+    setTimeout(()=>{
+      const c=document.getElementById('chipsBienestar'); if(!c) return;
+      c.appendChild(chip('Agendar tutoría', ()=> userSays('Agendar tutoría con el profesor de CX')));
+      c.appendChild(chip('Contactar bienestar', ()=> addMsg('eva','He escalado tu caso a bienestar estudiantil. Te contactarán hoy.')));
+    },0);
+  },
+
+  eventos: async ()=>{
+    let html=`<h4>Próximos eventos</h4><div class="list">`;
+    for(const e of KB.eventos) html+=`<div class="row"><div><b>${e.titulo}</b><div class="tag">${e.fecha}</div></div><a class="cta secondary" href="${e.link}">Inscribirme</a></div>`;
+    html+=`</div>`; addCard(html);
+  },
+
+  estado_tramite: async ()=>{
+    const id=state.slots.ticket_id;
+    if(!id){ state.pending='estado_tramite'; addMsg('eva','¿Cuál es tu número de ticket? (ej. HD-2025-0123)'); return; }
+    const item=TICKETS[id]||{estado:'No encontrado'};
+    addCard(`<h4>Estado de tu caso</h4><div class="list"><div><b>${id}</b></div><div class="tag">${item.estado}</div></div>`);
+    state.pending=null; state.slots={}
+  },
+
+  matricula_pagos: async ()=>{
+    const oper=state.slots.operacion;
+    if(!oper){
+      state.pending='matricula_pagos';
+      addMsg('eva','¿Quieres consultar <b>saldo</b>, ver <b>medios</b> de pago o descargar <b>factura</b>?',true);
+      const chips=document.createElement('div'); chips.className='chips';
+      ['saldo','medios','factura'].forEach(x=>chips.appendChild(chip(x,()=>userSays(x))));
+      addCard(chips.outerHTML); return;
+    }
+    if(oper==='saldo'){ addCard(`<h4>Tu saldo</h4><div class="list"><div>Periodo: 2025-Q1</div><div><b>USD 1,200.00</b></div></div>`); }
+    else if(oper==='medios'){ addCard(`<h4>Medios de pago</h4><div class="list">${['Tarjeta de crédito','Transferencia bancaria','PayPal'].map(m=>`<div>• ${m}</div>`).join('')}</div>`); }
+    else if(oper==='factura'){ addCard(`<h4>Factura</h4><div class="list"><div>Periodo: 2025-Q1</div><button class="cta secondary" onclick="alert('Descarga simulada')">Descargar PDF</button></div>`); }
+    else { addMsg('eva','Operación no reconocida. Usa: saldo | medios | factura.'); }
+    state.pending=null; state.slots={}
+  },
+
+  fallback: async ()=>{
+    const hits=[{title:"Reglamento Académico",url:"#",snippet:"Plazos, evaluaciones y apelaciones…"},
+                {title:"FAQ Becas",url:"#",snippet:"Requisitos, fechas y renovación…"}];
+    let html=`<h4>Esto es lo más parecido que encontré</h4><div class="list">`;
+    for(const h of hits) html+=`<div><b>${h.title}</b><div class="tag">${h.snippet}</div></div>`;
+    html+=`</div>`; addCard(html);
+  }
+};
+
+/* =========================
+   Router de mensajes
+========================= */
+function userSays(text){
+  if(!text) return;
+  addMsg('user', text);
+  const t=text.trim();
+
+  if(state.pending){
+    const p=state.pending;
+    switch(p){
+      case 'fechas_entregas':
+      case 'ver_calificaciones': state.slots.asignatura=parseAsignatura(t)||t; break;
+      case 'pedir_extension': for(const k of ['asignatura','actividad','fecha_propuesta','motivo']) if(!state.slots[k]){state.slots[k]=t; break;} break;
+      case 'agendar_tutoria': for(const k of ['profesor','datetime_inicio','datetime_fin']) if(!state.slots[k]){state.slots[k]=t; break;} break;
+      case 'certificados': for(const k of ['tipo_documento','idioma']) if(!state.slots[k]){state.slots[k]=t; break;} break;
+      case 'soporte_acceso': for(const k of ['plataforma','sintoma']) if(!state.slots[k]){state.slots[k]=t; break;} break;
+      case 'estado_tramite': state.slots.ticket_id=t; break;
+      case 'matricula_pagos': state.slots.operacion=t.toLowerCase(); break;
+    }
+    simulateThinking().then(()=>HANDLERS[p](t)); return;
   }
 
-  sendBtn.onclick = () => { userSays(input.value); input.value=''; input.focus(); };
-  input.addEventListener('keydown', (e)=>{ if (e.key==='Enter') sendBtn.click(); });
+  const intent = detectIntent(t); state.lastIntent=intent; state.slots={}; state.pending=null;
+  simulateThinking().then(()=>HANDLERS[intent](t));
+}
 
-  addMsg('eva', "¡Hola! Soy EVA, tu asistente estudiantil. Puedo ayudarte con:\n• Fechas de entrega\n• Prórrogas\n• Notas\n• Tutorías\n• Certificados\n• Soporte\n• Eventos\n• Estado de trámites\n• Pagos\n\n¿Con qué empezamos?");
-  const welcome = document.createElement('div'); welcome.className='chips';
-  ['Ver fechas', 'Pedir prórroga', 'Ver notas', 'Agendar tutoría', 'Certificados', 'Soporte', 'Eventos', 'Pagos'].forEach(c => {
-    welcome.appendChild(chip(c, ()=> userSays(c)));
-  });
-  addCard(welcome.outerHTML);
-  </script>
-</body>
-</html>
+/* =========================
+   EUDE News (live)
+========================= */
+/* Intenta:
+   1) Cargar HTML directo (puede fallar por CORS).
+   2) Fallback lector público r.jina.ai (demo): devuelve texto de la página.
+*/
+async function fetchRaw(url){
+  try{
+    const r = await fetch(url, {mode:'cors'});
+    if(r.ok && (r.headers.get('content-type')||'').includes('text/html')) return {type:'html', text: await r.text()};
+  }catch(e){}
+  // Fallback (solo para demo)
+  const prox = 'https://r.jina.ai/http://' + url.replace(/^https?:\/\//,'');
+  const r2 = a
